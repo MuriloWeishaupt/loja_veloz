@@ -15,6 +15,21 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: pedidos
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     env:
       DOCKER_REGISTRY: docker.io
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
@@ -25,14 +40,30 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2. Logar no Docker Hub
+      # 2. Setup do Node
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      # 3. Testes dos microserviços
+      - name: Run tests
+        run: |
+          cd pedidos && npm install && npm test
+          cd ../pagamentos && npm install && npm test
+          cd ../estoque && npm install && npm test
+          cd ../gateway && npm install && npm test
+          cd ..
+          echo "✅ Todos os testes passaram!"
+
+      # 4. Logar no Docker Hub
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # 3. Build e push das imagens
+      # 5. Build e push das imagens
       - name: Build & Push Pedidos
         run: |
           docker build -t $DOCKER_USERNAME/loja_veloz-pedidos:1.1 ./pedidos
@@ -53,19 +84,19 @@ jobs:
           docker build -t $DOCKER_USERNAME/loja_veloz-gateway:1.0 ./gateway
           docker push $DOCKER_USERNAME/loja_veloz-gateway:1.0
 
-      # 4. Instalar kubectl
+      # 6. Instalar kubectl
       - name: Set up kubectl
         uses: azure/setup-kubectl@v3.1.0
         with:
           version: v1.32.2
 
-      # 5. Criar cluster Kind
+      # 7. Criar cluster Kind
       - name: Set up Kind cluster
         uses: engineerd/setup-kind@v0.6.0
         with:
           version: v0.20.0
 
-      # 6. Deploy Postgres
+      # 8. Deploy Postgres
       - name: Deploy Postgres
         run: |
           echo "Aplicando Postgres..."
@@ -74,7 +105,7 @@ jobs:
           kubectl wait --for=condition=available --timeout=120s deployment/postgres
           kubectl get all -n default
 
-      # 7. Deploy Microservices com espera
+      # 9. Deploy Microservices com espera
       - name: Deploy Microservices
         run: |
           echo "Aplicando Pedidos..."

@@ -27,6 +27,11 @@ app.post("/reservar", (req, res) => {
 
 });
 
-app.listen(3003, () => {
-    console.log("Estoque rodando");
-})
+if (require.main === module) {
+    const PORT = 3003;
+    app.listen(PORT, () => {
+        console.log("Estoque rodando");
+    });
+}
+
+module.exports = app;
