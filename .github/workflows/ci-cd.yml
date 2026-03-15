@@ -32,22 +32,22 @@ jobs:
       # 3. Buildar e push das imagens
       - name: Build & Push Pedidos
         run: |
-          docker build -t $DOCKER_USERNAME/loja_veloz-pedidos:1.1 ./services/pedidos
+          docker build -t $DOCKER_USERNAME/loja_veloz-pedidos:1.1 ./pedidos
           docker push $DOCKER_USERNAME/loja_veloz-pedidos:1.1
 
       - name: Build & Push Pagamentos
         run: |
-          docker build -t $DOCKER_USERNAME/loja_veloz-pagamentos:1.0 ./services/pagamentos
+          docker build -t $DOCKER_USERNAME/loja_veloz-pagamentos:1.0 ./pagamentos
           docker push $DOCKER_USERNAME/loja_veloz-pagamentos:1.0
 
       - name: Build & Push Estoque
         run: |
-          docker build -t $DOCKER_USERNAME/loja_veloz-estoque:1.1 ./services/estoque
+          docker build -t $DOCKER_USERNAME/loja_veloz-estoque:1.1 ./estoque
           docker push $DOCKER_USERNAME/loja_veloz-estoque:1.1
 
       - name: Build & Push Gateway
         run: |
-          docker build -t $DOCKER_USERNAME/loja_veloz-gateway:1.0 ./services/gateway
+          docker build -t $DOCKER_USERNAME/loja_veloz-gateway:1.0 ./gateway
           docker push $DOCKER_USERNAME/loja_veloz-gateway:1.0
 
       # 4. Aplicar no Kubernetes
