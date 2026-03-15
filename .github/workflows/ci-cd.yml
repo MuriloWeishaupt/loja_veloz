@@ -8,6 +8,9 @@ on:
     branches:
       - main
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true 
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -24,7 +27,7 @@ jobs:
 
       # 2. Logar no Docker Hub
       - name: Log in to Docker Hub
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
@@ -52,13 +55,13 @@ jobs:
 
       # 4. Instalar kubectl
       - name: Set up kubectl
-        uses: azure/setup-kubectl@v3
+        uses: azure/setup-kubectl@v3.1.0
         with:
           version: v1.32.2
 
       # 5. Criar cluster Kind
       - name: Set up Kind cluster
-        uses: engineerd/setup-kind@v0.5.0
+        uses: engineerd/setup-kind@v0.6.0
         with:
           version: v0.20.0
 
