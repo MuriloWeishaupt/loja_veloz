@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: estoque
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: estoque
+
+  template:
+    metadata:
+      labels:
+        app: estoque
+
+    spec:
+      containers:
+      - name: estoque
+        image: mweishaupt13/loja_veloz-estoque:1.1
+        ports:
+        - containerPort: 3003

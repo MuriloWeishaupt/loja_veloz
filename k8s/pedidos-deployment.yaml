@@ -1,0 +1,23 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: pedidos
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: pedidos
+
+  template:
+    metadata:
+      labels:
+        app: pedidos
+
+    spec:
+      containers:
+      - name: pedidos
+        image: mweishaupt13/loja_veloz-pedidos:1.1
+        ports:
+        - containerPort: 3001

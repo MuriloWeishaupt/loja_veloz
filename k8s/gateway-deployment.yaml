@@ -1,0 +1,23 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: gateway
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: gateway
+
+  template:
+    metadata:
+      labels:
+        app: gateway
+
+    spec:
+      containers:
+      - name: gateway
+        image: mweishaupt13/loja_veloz-gateway:1.0
+        ports:
+        - containerPort: 3000
