@@ -49,10 +49,26 @@ jobs:
       # 3. Rodar testes dos microserviços
       - name: Run tests
         run: |
-          cd pedidos && npm install && npx jest
-          cd ../pagamentos && npm install && npx jest
-          cd ../estoque && npm install && npx jest
-          cd ../gateway && npm install && npx jest
+          cd pedidos
+          npm install
+          chmod +x node_modules/.bin/jest
+          npx jest
+
+          cd ../pagamentos
+          npm install
+          chmod +x node_modules/.bin/jest
+          npx jest
+
+          cd ../estoque
+          npm install
+          chmod +x node_modules/.bin/jest
+          npx jest
+
+          cd ../gateway
+          npm install
+          chmod +x node_modules/.bin/jest
+          npx jest
+
           cd ..
           echo "✅ Todos os testes passaram!"
 
@@ -112,7 +128,7 @@ jobs:
           kubectl wait --for=condition=available --timeout=120s deployment/postgres
           kubectl get all -n default
 
-      # 1. Deploy Microservices com espera
+      # 10. Deploy Microservices com espera
       - name: Deploy Microservices
         run: |
           echo "Aplicando Pedidos..."
