@@ -57,7 +57,7 @@ jobs:
           cd pedidos
           npm install
           chmod +x node_modules/.bin/jest
-          ../wait-for-it.sh db:5432 --timeout=30 --strict
+          ../wait-for-it.sh localhost:5432 --timeout=60 --strict
           npx jest
 
           # --- Microserviço Pagamentos ---
