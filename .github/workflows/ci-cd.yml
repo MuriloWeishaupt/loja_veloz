@@ -169,3 +169,13 @@ jobs:
 
           echo "✅ Todos os microserviços estão rodando:"
           kubectl get all -n default
+
+      
+     # 12. Deploy HPA
+      - name: Deploy HPA Pedidos
+        run: |
+          kubectl apply -f ./k8s/hpa/pedidos-hpa.yaml
+
+      - name: Deploy HPA Gateway
+        run: |
+          kubectl apply -f ./k8s/hpa/gateway-hpa.yaml 
