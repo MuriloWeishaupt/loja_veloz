@@ -21,3 +21,10 @@ spec:
         image: mweishaupt13/loja_veloz-gateway:1.0
         ports:
         - containerPort: 3000
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
