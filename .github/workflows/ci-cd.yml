@@ -9,7 +9,7 @@ on:
       - main
 
 env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true 
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   build-and-deploy:
@@ -40,7 +40,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2. Setup Node.js
+      # 2. Setup do Node
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -93,7 +93,7 @@ jobs:
 
       # 7. Instalar kubectl
       - name: Set up kubectl
-        uses: azure/setup-kubectl@v3.1.0
+        uses: azure/setup-kubectl@v3
         with:
           version: v1.32.2
 
