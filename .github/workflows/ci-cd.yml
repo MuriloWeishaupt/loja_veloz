@@ -49,24 +49,35 @@ jobs:
       # 3. Rodar testes dos microserviços
       - name: Run tests
         run: |
+          # Instalar wait-for-it globalmente para esperar o banco
+          npm install -g wait-for-it
+
+          # Microserviço Pedidos
           cd pedidos
           npm install
           chmod +x node_modules/.bin/jest
+          wait-for-it db:5432 --timeout=30 --strict
           npx jest
 
+          # Microserviço Pagamentos
           cd ../pagamentos
           npm install
           chmod +x node_modules/.bin/jest
+          wait-for-it db:5432 --timeout=30 --strict
           npx jest
 
+          # Microserviço Estoque
           cd ../estoque
           npm install
           chmod +x node_modules/.bin/jest
+          wait-for-it db:5432 --timeout=30 --strict
           npx jest
 
+          # Microserviço Gateway
           cd ../gateway
           npm install
           chmod +x node_modules/.bin/jest
+          wait-for-it db:5432 --timeout=30 --strict
           npx jest
 
           cd ..
