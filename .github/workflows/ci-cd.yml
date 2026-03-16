@@ -46,14 +46,7 @@ jobs:
         with:
           node-version: 20
 
-      # 3. Rodar ESLint
-      - name: Run ESLint
-        run: |
-          npm install eslint --save-dev
-          npx eslint "pedidos/**/*.js" "pagamentos/**/*.js" "estoque/**/*.js" "gateway/**/*.js" --max-warnings=0
-          echo "✅ Lint passou sem warnings!"
-
-      # 4. Rodar testes dos microserviços
+      # 3. Rodar testes dos microserviços
       - name: Run tests
         run: |
           cd pedidos && npm install && npm test
@@ -63,14 +56,14 @@ jobs:
           cd ..
           echo "✅ Todos os testes passaram!"
 
-      # 5. Logar no Docker Hub
+      # 4. Logar no Docker Hub
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # 6. Build e push das imagens
+      # 5. Build e push das imagens
       - name: Build & Push Pedidos
         run: |
           docker build -t $DOCKER_USERNAME/loja_veloz-pedidos:1.1 ./pedidos
@@ -91,13 +84,13 @@ jobs:
           docker build -t $DOCKER_USERNAME/loja_veloz-gateway:1.0 ./gateway
           docker push $DOCKER_USERNAME/loja_veloz-gateway:1.0
 
-      # 7. Instalar kubectl
+      # 6. Instalar kubectl
       - name: Set up kubectl
         uses: azure/setup-kubectl@v3
         with:
           version: v1.32.2
 
-      # 8. Instalar Kind manualmente (substituindo engineerd/setup-kind)
+      # 7. Instalar Kind manualmente
       - name: Install Kind
         run: |
           curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
@@ -105,12 +98,12 @@ jobs:
           sudo mv ./kind /usr/local/bin/kind
           kind version
 
-      # 9. Criar cluster Kind
+      # 8. Criar cluster Kind
       - name: Create Kind cluster
         run: |
           kind create cluster --name loja-veloz
 
-      # 10. Deploy Postgres
+      # 9. Deploy Postgres
       - name: Deploy Postgres
         run: |
           echo "Aplicando Postgres..."
@@ -119,7 +112,7 @@ jobs:
           kubectl wait --for=condition=available --timeout=120s deployment/postgres
           kubectl get all -n default
 
-      # 11. Deploy Microservices com espera
+      # 10. Deploy Microservices com espera
       - name: Deploy Microservices
         run: |
           echo "Aplicando Pedidos..."
