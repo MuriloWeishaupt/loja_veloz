@@ -6,11 +6,11 @@ const app = express();
 app.use(express.json());
 
 const pool = new Pool({
-    host: "db",
-    user: "postgres",
-    password: "postgres",
-    database: "pedidos",
-    port: 5432
+    host: process.env.POSTGRES_HOST || "db",  
+    user: process.env.POSTGRES_USER || "postgres",
+    password: process.env.POSTGRES_PASSWORD || "postgres",
+    database: process.env.POSTGRES_DB || "pedidos",
+    port: process.env.POSTGRES_PORT || 5432
 });
 
 app.post("/pedidos", async (req, res) => {
