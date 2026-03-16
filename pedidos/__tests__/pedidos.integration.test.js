@@ -11,7 +11,7 @@ app.use(express.json());
 
 
 const pool = new Pool({
-    host: "db",      
+    host: "localhost",      
     user: "postgres",
     password: "postgres",
     database: "pedidos",
